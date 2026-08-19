@@ -108,9 +108,15 @@ input[type=search]:focus{outline:none;border-color:var(--primary)}
 
 .step{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px 16px;margin-bottom:10px}
 .step .ph{font-weight:700;color:var(--primary);font-size:13px;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between}
-.step ul{margin-left:18px;font-size:12px;line-height:1.6}
+.step ul{margin-left:18px;font-size:12px;line-height:1.5}
 
-/* PRINT STYLES - A4 Optimized */
+/* MathJax SVG Universal Styling */
+mjx-container[jax="SVG"]{display:inline-block!important;vertical-align:middle!important;outline:none!important}
+mjx-container[jax="SVG"][display="true"]{display:block!important;text-align:center!important;margin:6px 0!important}
+mjx-container[jax="SVG"] svg{display:inline-block!important;vertical-align:middle!important;stroke:none!important;stroke-width:0!important}
+mjx-container[jax="SVG"] svg path{stroke:none!important;stroke-width:0!important}
+
+/* PRINT STYLES - A4 Optimized & Clean MathJax */
 @media print{
   @page{size:A4 portrait;margin:10mm}
   body{background:#fff!important;color:#000!important;display:block}
@@ -125,10 +131,13 @@ input[type=search]:focus{outline:none;border-color:var(--primary)}
     box-shadow:none!important;
     break-inside:avoid!important;
     page-break-inside:avoid!important;
+    overflow:visible!important;
+    overflow-x:visible!important;
+    max-width:100%!important;
   }
   th{background:#f1f5f9!important;color:#0f172a!important;border-bottom:2px solid #94a3b8!important}
   td{color:#000!important;border-bottom:1px solid #e2e8f0!important}
-  .formula-box{border-left:3px solid #0284c7!important}
+  .formula-box{border-left:3px solid #0284c7!important;font-size:10pt!important;padding:6px 10px!important}
   .formula-box .f-title{color:#0284c7!important}
   h2{color:#0284c7!important}
   .badge.ok{background:#d1fae5!important;color:#065f46!important;border:1px solid #34d399!important}
@@ -136,6 +145,12 @@ input[type=search]:focus{outline:none;border-color:var(--primary)}
   .tip,.learn{background:#f8fafc!important;color:#334155!important;border:1px solid #cbd5e1!important}
   .lessons-grid{display:block!important}
   .lesson{margin-bottom:10px!important;page-break-after:auto!important}
+
+  /* MathJax Print Cleanup */
+  mjx-container[jax="SVG"]{color:#000!important}
+  mjx-container[jax="SVG"] svg{fill:#000!important;stroke:none!important;stroke-width:0!important}
+  mjx-container[jax="SVG"] path{fill:#000!important;stroke:none!important;stroke-width:0!important}
+  td mjx-container[jax="SVG"]{font-size:95%!important}
 }
 </style>
 </head>
@@ -456,14 +471,14 @@ input[type=search]:focus{outline:none;border-color:var(--primary)}
       </thead>
       <tbody>
         <tr><td>1</td><td>Nominal Pipe Diameter</td><td>DN [in] / OD [mm]</td><td>Client Pipelay Spec</td><td>Defines head pipe size, padeye interface &amp; flange sizing</td></tr>
-        <tr><td>2</td><td>Wall Thickness &amp; Grade</td><td>$t_{pipe}$ / API 5L</td><td>Line Pipe Spec</td><td>Determines pipe yield strength (SMYS/SMTS) &amp; weld thickness</td></tr>
-        <tr><td>3</td><td>Nominal Pull Force</td><td>$F_{nom}$ [kN]</td><td>Pipelay Analysis Report</td><td>Primary tension load for installation, A&amp;R, or recovery</td></tr>
-        <tr><td>4</td><td>Dynamic Amplification Factor</td><td>DAF</td><td>DNV-ST-N001 Table 16-1</td><td>Account for wave/vessel motion dynamics ($\approx 1.40$ tension, $2.44$ lifting)</td></tr>
-        <tr><td>5</td><td>Hydrotest Pressure</td><td>$P_{hydro}$ [MPa]</td><td>Pipeline Design Report</td><td>Determines closure plate thickness &amp; threadolet rating</td></tr>
-        <tr><td>6</td><td>Estimated Head Weight</td><td>$W_{head}$ [t]</td><td>Preliminary BOM</td><td>Used for sizing lifting padeye and deck handling equipment</td></tr>
+        <tr><td>2</td><td>Wall Thickness &amp; Grade</td><td><i>t</i><sub>pipe</sub> / API 5L</td><td>Line Pipe Spec</td><td>Determines pipe yield strength (SMYS/SMTS) &amp; weld thickness</td></tr>
+        <tr><td>3</td><td>Nominal Pull Force</td><td><i>F</i><sub>nom</sub> [kN]</td><td>Pipelay Analysis Report</td><td>Primary tension load for installation, A&amp;R, or recovery</td></tr>
+        <tr><td>4</td><td>Dynamic Amplification Factor</td><td>DAF</td><td>DNV-ST-N001 Table 16-1</td><td>Account for wave dynamics (DAF ≈ 1.40 tension, 2.44 lifting)</td></tr>
+        <tr><td>5</td><td>Hydrotest Pressure</td><td><i>P</i><sub>hydro</sub> [MPa]</td><td>Pipeline Design Report</td><td>Determines closure plate thickness &amp; threadolet rating</td></tr>
+        <tr><td>6</td><td>Estimated Head Weight</td><td><i>W</i><sub>head</sub> [t]</td><td>Preliminary BOM</td><td>Used for sizing lifting padeye and deck handling equipment</td></tr>
         <tr><td>7</td><td>Required Head Types</td><td>A / B / C</td><td>Installation Sequence</td><td>A: Start-up/Laydown, B: Storm A&amp;R, C: Wet-Buckle Emergency Recovery</td></tr>
-        <tr><td>8</td><td>Out-of-Plane Sling Angles</td><td>$\theta_{in}, \theta_{out}$</td><td>DNV-ST-N001 §7.9.9</td><td>Mandatory 5° in-plane + 5° out-of-plane design angle components</td></tr>
-        <tr><td>9</td><td>Available Shackle Catalog</td><td>Model / WLL</td><td>Rigging Contractor</td><td>Fixes pin diameter ($D_{pin}$) and jaw width for padeye sizing</td></tr>
+        <tr><td>8</td><td>Out-of-Plane Sling Angles</td><td>&theta;<sub>in</sub>, &theta;<sub>out</sub></td><td>DNV-ST-N001 §7.9.9</td><td>Mandatory 5° in-plane + 5° out-of-plane design angle components</td></tr>
+        <tr><td>9</td><td>Available Shackle Catalog</td><td>Model / WLL</td><td>Rigging Contractor</td><td>Fixes pin diameter (<i>D</i><sub>pin</sub>) and jaw width for padeye sizing</td></tr>
       </tbody>
     </table>
   </div>
@@ -489,10 +504,14 @@ input[type=search]:focus{outline:none;border-color:var(--primary)}
       <div>
         <h2 style="font-size:13px;color:var(--primary)">Critical Material Property Rules:</h2>
         <div class="formula-box">
-          <div class="f-title">S355 Plate Yield Strength vs Thickness ($t$) — EN 10025:</div>
-          $$\sigma_y = 355\text{ MPa } (t \le 16\text{ mm}) \quad \mid \quad \sigma_y = 345\text{ MPa } (16 < t \le 40\text{ mm}) \quad \mid \quad \sigma_y = 335\text{ MPa } (40 < t \le 63\text{ mm})$$
+          <div class="f-title">S355 Plate Yield Strength vs Thickness (t) — EN 10025:</div>
+          <ul style="margin-left:14px;font-size:12px;line-height:1.6">
+            <li>t &le; 16 mm &nbsp;&implies;&nbsp; &sigma;<sub>y</sub> = 355 MPa &nbsp;|&nbsp; SMTS = 470 MPa</li>
+            <li>16 &lt; t &le; 40 mm &nbsp;&implies;&nbsp; &sigma;<sub>y</sub> = 345 MPa &nbsp;|&nbsp; SMTS = 470 MPa</li>
+            <li>40 &lt; t &le; 63 mm &nbsp;&implies;&nbsp; &sigma;<sub>y</sub> = 335 MPa &nbsp;|&nbsp; SMTS = 470 MPa</li>
+          </ul>
         </div>
-        <div class="learn"><b>Elastic Constants:</b> Young's Modulus $E = 210,000\text{ MPa}$, Poisson's ratio $\nu = 0.3$, Density $\rho = 7,850\text{ kg/m}^3$.</div>
+        <div class="learn"><b>Elastic Constants:</b> Young's Modulus <i>E</i> = 210,000 MPa, Poisson's ratio &nu; = 0.3, Density &rho; = 7,850 kg/m<sup>3</sup>.</div>
       </div>
     </div>
   </div>
@@ -539,18 +558,18 @@ input[type=search]:focus{outline:none;border-color:var(--primary)}
       <div>
         <h2 style="font-size:13px;color:var(--primary)">1. Main Padeye &amp; Pin Sizing:</h2>
         <ul>
-          <li><b>Shackle Selection:</b> Choose Shackle WLL $\ge F_{SD}$ from Wide Body catalog (e.g. 55t Wide Body P-6013 with $D_{pin} = 57\text{ mm}$).</li>
-          <li><b>Hole Diameter ($D_{hole}$):</b> $D_{hole} = D_{pin} + \text{GAP}$, where $\text{GAP} \ge \max(2\text{ mm},\ 3\% D_{pin})$. <i>(Crucial to prevent pin binding!)</i></li>
-          <li><b>Main Plate Thickness ($t_{main}$):</b> First estimate $t_{main} \approx \dfrac{F_d}{\sigma_{allow} \cdot D_{pin}}$.</li>
-          <li><b>Outer Radius ($R_{pad}$):</b> $R_{pad} \approx 1.5 \cdot D_{hole}$.</li>
-          <li><b>Cheek Plates ($t_{cheek}$):</b> $t_{cheek} \approx 0.5 \cdot t_{main}$ (welded both sides).</li>
+          <li><b>Shackle Selection:</b> Choose Shackle WLL &ge; <i>F</i><sub>SD</sub> from Wide Body catalog (e.g. 55t Wide Body P-6013 with <i>D</i><sub>pin</sub> = 57 mm).</li>
+          <li><b>Hole Diameter (<i>D</i><sub>hole</sub>):</b> <i>D</i><sub>hole</sub> = <i>D</i><sub>pin</sub> + GAP, where GAP &ge; max(2 mm, 3% <i>D</i><sub>pin</sub>). <i>(Crucial to prevent pin binding!)</i></li>
+          <li><b>Main Plate Thickness (<i>t</i><sub>main</sub>):</b> First estimate <i>t</i><sub>main</sub> &approx; <i>F</i><sub>d</sub> / (&sigma;<sub>allow</sub> &middot; <i>D</i><sub>pin</sub>).</li>
+          <li><b>Outer Radius (<i>R</i><sub>pad</sub>):</b> <i>R</i><sub>pad</sub> &approx; 1.5 &middot; <i>D</i><sub>hole</sub>.</li>
+          <li><b>Cheek Plates (<i>t</i><sub>cheek</sub>):</b> <i>t</i><sub>cheek</sub> &approx; 0.5 &middot; <i>t</i><sub>main</sub> (welded both sides).</li>
         </ul>
       </div>
       <div>
         <h2 style="font-size:13px;color:var(--primary)">2. Closure Plate &amp; Shroud Sizing:</h2>
         <ul>
-          <li><b>Closure Plate ($t_{closure}$):</b> Semicircular solid plate thickness sized by Roark Table 11.2 formula under hydrotest pressure $P_{hydro} \cdot \gamma_Q$ ($\gamma_Q = 1.50$).</li>
-          <li><b>Shroud Protection:</b> Rolled shell thickness $t_{shroud} \approx 10\text{--}12\text{ mm}$, clamp bolts M24 Grade 8.8 pretensioned to $70\% f_{ub} A_s$.</li>
+          <li><b>Closure Plate (<i>t</i><sub>closure</sub>):</b> Semicircular solid plate thickness sized by Roark Table 11.2 formula under hydrotest pressure <i>P</i><sub>hydro</sub> &middot; &gamma;<sub>Q</sub> (&gamma;<sub>Q</sub> = 1.50).</li>
+          <li><b>Shroud Protection:</b> Rolled shell thickness <i>t</i><sub>shroud</sub> &approx; 10--12 mm, clamp bolts M24 Grade 8.8 pretensioned to 70% <i>f</i><sub>ub</sub> <i>A</i><sub>s</sub>.</li>
           <li><b>Threadolets &amp; Nipples:</b> 2" 3000# or 6000# NPT threadolets welded to pipe for vent/drain.</li>
         </ul>
       </div>
@@ -599,7 +618,7 @@ input[type=search]:focus{outline:none;border-color:var(--primary)}
         <h2 style="font-size:13px;color:var(--primary)">1. Fabrication Drawings (Drafter Package):</h2>
         <ul>
           <li><b>Assembly Drawing:</b> Complete general arrangement (GA) of head welded to line pipe.</li>
-          <li><b>Main Padeye Detail:</b> Full dimensioning of hole $D_{hole}$, pin $D_{pin}$, radius $R_{pad}$, and bevels.</li>
+          <li><b>Main Padeye Detail:</b> Full dimensioning of hole <i>D</i><sub>hole</sub>, pin <i>D</i><sub>pin</sub>, radius <i>R</i><sub>pad</sub>, and bevels.</li>
           <li><b>Cheek &amp; Closure Plate Details:</b> Plate thickness, hole beveling, and full-penetration weld symbols.</li>
           <li><b>Shroud &amp; Clamp Details:</b> Half-shell dimensions, rubber lining, bolt torque specs.</li>
           <li><b>Bill of Materials (BOM):</b> Complete itemized table with material grades, quantities, weights, and standards.</li>
