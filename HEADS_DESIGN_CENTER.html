@@ -116,14 +116,17 @@ mjx-container[jax="SVG"][display="true"]{display:block!important;text-align:cent
 mjx-container[jax="SVG"] svg{display:inline-block!important;vertical-align:middle!important;stroke:none!important;stroke-width:0!important}
 mjx-container[jax="SVG"] svg path{stroke:none!important;stroke-width:0!important}
 
-/* PRINT STYLES - A4 Optimized & Clean MathJax */
+/* PRINT STYLES - All Tabs Printable & Clean MathJax */
 @media print{
   @page{size:A4 portrait;margin:10mm}
-  body{background:#fff!important;color:#000!important;display:block}
+  body{background:#fff!important;color:#000!important;display:block!important}
   sidebar,.no-print{display:none!important}
   main{margin-left:0!important;width:100%!important;padding:0!important;max-width:100%!important}
-  .tab{display:none!important}
-  .tab.active{display:block!important}
+  
+  /* Print all tabs in order with clean page breaks */
+  .tab{display:block!important;page-break-after:always;break-after:page}
+  .tab:last-of-type{page-break-after:auto;break-after:auto}
+
   .card,.lesson,.step,table,.formula-box{
     background:#fff!important;
     color:#000!important;
@@ -146,7 +149,7 @@ mjx-container[jax="SVG"] svg path{stroke:none!important;stroke-width:0!important
   .lessons-grid{display:block!important}
   .lesson{margin-bottom:10px!important;page-break-after:auto!important}
 
-  /* MathJax Print Cleanup */
+  /* MathJax Universal Print Cleanup across ALL pages */
   mjx-container[jax="SVG"]{color:#000!important}
   mjx-container[jax="SVG"] svg{fill:#000!important;stroke:none!important;stroke-width:0!important}
   mjx-container[jax="SVG"] path{fill:#000!important;stroke:none!important;stroke-width:0!important}
@@ -218,8 +221,8 @@ mjx-container[jax="SVG"] svg path{stroke:none!important;stroke-width:0!important
     <div class="card">
       <div class="label" style="color:var(--primary)">Why are Installation Heads Used? (4 Key Functions)</div>
       <div class="hint" style="font-size:12px;color:#cbd5e1;margin-top:6px;line-height:1.5">
-        <b>1. Tension Load Transfer:</b> Safely transfers A&amp;R winch pull forces ($F_d$) into the pipe wall.<br>
-        <b>2. Hydrostatic &amp; Pressure Seal:</b> Keeps seawater out during lay; withstands hydrotest ($P_{hydro}$).<br>
+        <b>1. Tension Load Transfer:</b> Safely transfers A&amp;R winch pull forces (<i>F</i><sub>d</sub>) into the pipe wall.<br>
+        <b>2. Hydrostatic &amp; Pressure Seal:</b> Keeps seawater out during lay; withstands hydrotest (<i>P</i><sub>hydro</sub>).<br>
         <b>3. Pigging &amp; Dewatering Interface:</b> Houses closure plates, threadolets &amp; pig stoppers for flooding/purging.<br>
         <b>4. Seabed Handling &amp; Protection:</b> Enables subsea initiation, abandonment &amp; roller protection via shroud.
       </div>
@@ -260,7 +263,7 @@ mjx-container[jax="SVG"] svg path{stroke:none!important;stroke-width:0!important
     <tbody>
       <tr>
         <td><b>Winch Connection &amp; Tension</b></td>
-        <td>Connect shackle pin &amp; transmit tension ($F_{SD}$)</td>
+        <td>Connect shackle pin &amp; transmit tension (<i>F</i><sub>SD</sub>)</td>
         <td><span class="badge blue">Phase 0 &amp; Phase 2</span></td>
         <td>Check 1 (Bearing) &amp; Check 2 (Tear-out)</td>
       </tr>
@@ -278,7 +281,7 @@ mjx-container[jax="SVG"] svg path{stroke:none!important;stroke-width:0!important
       </tr>
       <tr>
         <td><b>Deepwater Pressure &amp; Dewatering</b></td>
-        <td>Retain internal hydrotest ($P_{hydro}$) &amp; stop pig exit</td>
+        <td>Retain internal hydrotest (<i>P</i><sub>hydro</sub>) &amp; stop pig exit</td>
         <td><span class="badge blue">Phase 0 &amp; Phase 4</span></td>
         <td>Check 6 (Closure Plate), Check 7 (Pig Stopper) &amp; Check 8 (Threadolet)</td>
       </tr>
@@ -300,9 +303,9 @@ mjx-container[jax="SVG"] svg path{stroke:none!important;stroke-width:0!important
   <!-- Formulas & Safety Factors Summary -->
   <h2 style="font-size:14px;margin:14px 0 6px 0">Design Formula &amp; Safety Factor Quick Reference</h2>
   <div class="grid g3">
-    <div class="card"><div class="label">Design Load — LRFD</div><div class="value">$F_d = F_{SD} \cdot \gamma_c \cdot \gamma_f$</div><div class="hint">γc = 1.30 · γf = 1.30 · DNV-ST-N001</div></div>
-    <div class="card"><div class="label">Safety Factors</div><div class="value">γm = 1.15 · γmw = 1.30</div><div class="hint">γQ = 1.50 · DAF ≈ 1.4 (lifting 2.44)</div></div>
-    <div class="card"><div class="label">Acceptance Criterion</div><div class="value">UC ≤ 1.0</div><div class="hint">Unity Check = Calculated Stress ÷ Allowable Limit</div></div>
+    <div class="card"><div class="label">Design Load — LRFD</div><div class="value"><i>F</i><sub>d</sub> = <i>F</i><sub>SD</sub> &middot; &gamma;<sub>c</sub> &middot; &gamma;<sub>f</sub></div><div class="hint">&gamma;c = 1.30 &middot; &gamma;f = 1.30 &middot; DNV-ST-N001</div></div>
+    <div class="card"><div class="label">Safety Factors</div><div class="value">&gamma;<sub>m</sub> = 1.15 &middot; &gamma;<sub>mw</sub> = 1.30</div><div class="hint">&gamma;Q = 1.50 &middot; DAF &approx; 1.4 (lifting 2.44)</div></div>
+    <div class="card"><div class="label">Acceptance Criterion</div><div class="value">UC &le; 1.0</div><div class="hint">Unity Check = Calculated Stress &divide; Allowable Limit</div></div>
   </div>
 
   <div class="learn"><b>Connecting to Guideline:</b> Go to the <b>Guideline</b> tab to see how to execute Phase 0 through Phase 5 step-by-step from client input to final report delivery.</div>
@@ -473,7 +476,7 @@ mjx-container[jax="SVG"] svg path{stroke:none!important;stroke-width:0!important
         <tr><td>1</td><td>Nominal Pipe Diameter</td><td>DN [in] / OD [mm]</td><td>Client Pipelay Spec</td><td>Defines head pipe size, padeye interface &amp; flange sizing</td></tr>
         <tr><td>2</td><td>Wall Thickness &amp; Grade</td><td><i>t</i><sub>pipe</sub> / API 5L</td><td>Line Pipe Spec</td><td>Determines pipe yield strength (SMYS/SMTS) &amp; weld thickness</td></tr>
         <tr><td>3</td><td>Nominal Pull Force</td><td><i>F</i><sub>nom</sub> [kN]</td><td>Pipelay Analysis Report</td><td>Primary tension load for installation, A&amp;R, or recovery</td></tr>
-        <tr><td>4</td><td>Dynamic Amplification Factor</td><td>DAF</td><td>DNV-ST-N001 Table 16-1</td><td>Account for wave dynamics (DAF ≈ 1.40 tension, 2.44 lifting)</td></tr>
+        <tr><td>4</td><td>Dynamic Amplification Factor</td><td>DAF</td><td>DNV-ST-N001 Table 16-1</td><td>Account for wave dynamics (DAF &approx; 1.40 tension, 2.44 lifting)</td></tr>
         <tr><td>5</td><td>Hydrotest Pressure</td><td><i>P</i><sub>hydro</sub> [MPa]</td><td>Pipeline Design Report</td><td>Determines closure plate thickness &amp; threadolet rating</td></tr>
         <tr><td>6</td><td>Estimated Head Weight</td><td><i>W</i><sub>head</sub> [t]</td><td>Preliminary BOM</td><td>Used for sizing lifting padeye and deck handling equipment</td></tr>
         <tr><td>7</td><td>Required Head Types</td><td>A / B / C</td><td>Installation Sequence</td><td>A: Start-up/Laydown, B: Storm A&amp;R, C: Wet-Buckle Emergency Recovery</td></tr>
@@ -718,7 +721,7 @@ mjx-container[jax="SVG"] svg path{stroke:none!important;stroke-width:0!important
 
   <div class="grid g2">
     <div class="card"><div class="label">Pipe</div><div class="value" style="font-size:13.5px">API 5L X60 · OD 219.1 · WT 12.7</div><div class="hint">SMYS 415 · SMTS 520</div></div>
-    <div class="card"><div class="label">Design Loads</div><div class="value" style="font-size:13.5px">A: 887 · B: 840 · C: 836 kN</div><div class="hint">$F_d = F_{SD}\times 1.3\times 1.3$</div></div>
+    <div class="card"><div class="label">Design Loads</div><div class="value" style="font-size:13.5px">A: 887 · B: 840 · C: 836 kN</div><div class="hint"><i>F</i><sub>d</sub> = <i>F</i><sub>SD</sub> &times; 1.3 &times; 1.3</div></div>
     <div class="card"><div class="label">Shackle</div><div class="value" style="font-size:13.5px">Wide Body 55t P-6013</div><div class="hint">WLL 540 kN ≥ 527</div></div>
     <div class="card"><div class="label">Pins</div><div class="value" style="font-size:13.5px">57/59 · 107/110 mm</div><div class="hint">gap 2.0 / 3.0 mm</div></div>
   </div>
