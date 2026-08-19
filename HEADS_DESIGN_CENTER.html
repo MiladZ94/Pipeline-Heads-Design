@@ -3,95 +3,265 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pipeline Heads Design — Reference Center</title>
+<title>Pipeline Heads Design — Learning Center</title>
+<script>
+window.MathJax = { tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] }, svg: { fontCache: 'global' } };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 <style>
-:root{--bg:#0d1117;--card:#161b22;--border:#30363d;--text:#d4d8e0;--accent:#f5a524;--blue:#3fa9f5;--green:#3fb950;--red:#f85149;--muted:#8b949e}
+:root{
+  --bg:#f5f7fb; --card:#ffffff; --border:#e2e8f0; --text:#1e293b; --muted:#64748b;
+  --primary:#2563eb; --primary-soft:#dbeafe; --green:#059669; --green-soft:#d1fae5;
+  --amber:#d97706; --amber-soft:#fef3c7; --red:#dc2626; --red-soft:#fee2e2;
+  --shadow:0 1px 3px rgba(0,0,0,.06),0 4px 12px rgba(0,0,0,.05);
+}
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;height:100vh;overflow:hidden;display:flex;flex-direction:column}
-header{background:linear-gradient(90deg,#1a1d23,#22262e);border-bottom:1px solid var(--border);padding:10px 20px;display:flex;align-items:center;gap:16px}
-header h1{font-size:16px;color:var(--accent);font-weight:600;white-space:nowrap}
-header .sub{color:var(--muted);font-size:12px}
-nav{display:flex;gap:4px;background:var(--card);border-bottom:1px solid var(--border);padding:6px 20px;overflow-x:auto}
-nav button{background:transparent;border:1px solid transparent;color:var(--muted);padding:8px 16px;font-size:13px;cursor:pointer;border-radius:6px;white-space:nowrap}
-nav button:hover{color:var(--text);background:#1f242c}
-nav button.active{color:var(--accent);border-color:var(--accent);background:#1a1d23}
-main{flex:1;overflow-y:auto;padding:20px}
+body{background:var(--bg);color:var(--text);font-family:Arial,'Segoe UI',sans-serif;min-height:100vh}
+header{background:linear-gradient(135deg,#1e3a8a,#2563eb 60%,#3b82f6);color:#fff;padding:18px 28px;display:flex;align-items:center;gap:16px;box-shadow:0 2px 10px rgba(37,99,235,.25)}
+header h1{font-size:20px;font-weight:700;letter-spacing:.3px}
+header .sub{font-size:12.5px;opacity:.85;font-family:Arial}
+nav{background:var(--card);border-bottom:1px solid var(--border);padding:8px 28px;display:flex;gap:6px;flex-wrap:wrap;position:sticky;top:0;z-index:50}
+nav button{background:transparent;border:1.5px solid transparent;color:var(--muted);padding:9px 18px;font-size:13px;font-family:Arial;cursor:pointer;border-radius:10px;font-weight:600;transition:all .15s}
+nav button:hover{background:var(--primary-soft);color:var(--primary)}
+nav button.active{background:var(--primary);color:#fff;border-color:var(--primary);box-shadow:0 2px 8px rgba(37,99,235,.3)}
+main{max-width:1000px;margin:0 auto;padding:28px}
 .tab{display:none}
-.tab.active{display:block}
-h2{font-size:15px;color:var(--blue);margin-bottom:14px;border-bottom:1px solid var(--border);padding-bottom:8px}
-h3{font-size:13px;color:var(--accent);margin:16px 0 8px}
-.grid{display:grid;gap:12px;margin-bottom:16px}
-.g2{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
-.g3{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
-.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px}
-.card .label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
-.card .value{font-size:20px;font-weight:700;margin-top:4px;font-family:'Consolas',monospace}
-.card .hint{font-size:11px;color:var(--muted);margin-top:4px}
-table{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:16px}
-th{background:#1f242c;color:var(--blue);text-align:left;padding:8px 10px;border:1px solid var(--border);font-weight:600;white-space:nowrap}
-td{padding:7px 10px;border:1px solid var(--border);vertical-align:top}
-tr:nth-child(even) td{background:#14181f}
-.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600}
-.ok{background:#1a3a24;color:var(--green)}
-.warn{background:#3a2a14;color:var(--accent)}
-.pass{background:#1a3a24;color:var(--green)}
-.fail{background:#3a1a1c;color:var(--red)}
-.mono{font-family:'Consolas',monospace}
-input[type=search]{width:100%;max-width:420px;background:#0d1117;border:1px solid var(--border);color:var(--text);padding:9px 12px;border-radius:6px;font-size:13px;margin-bottom:14px}
-input[type=search]:focus{outline:none;border-color:var(--blue)}
-.step{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:6px;padding:12px 16px;margin-bottom:10px}
-.step .ph{font-weight:700;color:var(--accent);font-size:13px;margin-bottom:6px}
-.step ul{margin-left:18px;font-size:12.5px;color:var(--text)}
-.step li{margin-bottom:3px}
-.formula{background:#0d1117;border:1px solid var(--border);border-radius:6px;padding:10px 14px;font-family:'Consolas',monospace;font-size:12.5px;color:#7ee787;margin:6px 0;overflow-x:auto}
-.chip{display:inline-block;background:#1f242c;border:1px solid var(--border);border-radius:12px;padding:2px 10px;font-size:11px;margin:2px;color:var(--muted)}
-.note{background:#1a2a3a;border:1px solid #2a4a6a;border-radius:6px;padding:10px 14px;font-size:12.5px;margin:10px 0}
-footer{background:#1a1d23;border-top:1px solid var(--border);padding:6px 20px;font-size:11px;color:var(--muted);display:flex;justify-content:space-between}
-::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-thumb{background:#30363d;border-radius:4px}
+.tab.active{display:block;animation:fade .25s}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+h2{font-size:19px;color:var(--primary);margin-bottom:6px;font-family:Arial}
+.sec-sub{color:var(--muted);font-size:13px;margin-bottom:18px}
+.grid{display:grid;gap:14px;margin-bottom:20px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;box-shadow:var(--shadow);transition:transform .15s}
+.card:hover{transform:translateY(-2px)}
+.card .label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;font-weight:700}
+.card .value{font-size:17px;font-weight:700;margin-top:6px;font-family:Arial;color:var(--text)}
+.card .hint{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.5}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:14px 0;background:var(--card);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+th{background:#f1f5f9;color:var(--primary);text-align:left;padding:10px 14px;border-bottom:2px solid var(--border);font-family:Arial;font-weight:700;font-size:12.5px}
+td{padding:9px 14px;border-bottom:1px solid var(--border);vertical-align:top;font-family:Arial}
+tr:nth-child(even) td{background:#f8fafc}
+tr:last-child td{border-bottom:none}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;font-family:Arial}
+.ok{background:var(--green-soft);color:var(--green)}
+.warn{background:var(--amber-soft);color:var(--amber)}
+.blue{background:var(--primary-soft);color:var(--primary)}
+.formula-box{background:#f8fafc;border:1px solid var(--border);border-left:4px solid var(--primary);border-radius:10px;padding:14px 18px;margin:10px 0;overflow-x:auto}
+.formula-box .f-title{font-size:11px;color:var(--primary);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.lesson{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px;box-shadow:var(--shadow)}
+.lesson .l-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.lesson .l-num{background:var(--primary);color:#fff;width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;font-family:Arial}
+.lesson .l-title{font-size:15px;font-weight:700;color:var(--text);font-family:Arial}
+.lesson .l-tag{margin-left:auto}
+.lesson .l-body{font-size:13px;line-height:1.7;color:#334155}
+.lesson .l-body b{color:var(--primary)}
+.tip{background:var(--amber-soft);border:1px solid #fcd34d;border-radius:10px;padding:10px 14px;font-size:12.5px;margin-top:10px;color:#92400e}
+.learn{background:var(--green-soft);border:1px solid #6ee7b7;border-radius:10px;padding:10px 14px;font-size:12.5px;margin-top:10px;color:#065f46}
+input[type=search]{width:100%;max-width:480px;background:var(--card);border:1.5px solid var(--border);color:var(--text);padding:11px 16px;border-radius:10px;font-size:13.5px;font-family:Arial;margin-bottom:16px;box-shadow:var(--shadow)}
+input[type=search]:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(37,99,235,.12)}
+.chip{display:inline-block;background:#f1f5f9;border:1px solid var(--border);border-radius:20px;padding:3px 12px;font-size:11.5px;margin:2px;color:var(--muted);font-family:Arial}
+.step{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 20px;margin-bottom:12px;box-shadow:var(--shadow)}
+.step .ph{font-weight:700;color:var(--primary);font-size:13.5px;margin-bottom:8px;font-family:Arial}
+.step ul{margin-left:20px;font-size:13px;line-height:1.8}
+.mono{font-family:'Consolas','Courier New',monospace}
+footer{background:var(--card);border-top:1px solid var(--border);padding:12px 28px;font-size:12px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-family:Arial}
+/* Print: each lesson/section on its own A4 page */
+@media print{
+  @page{size:A4;margin:12mm}
+  body{background:#fff}
+  header,nav,footer,.no-print{display:none!important}
+  main{max-width:100%;padding:0}
+  .tab{display:block!important}
+  .card,.lesson,.step,table{box-shadow:none;break-inside:avoid}
+  .lesson,.step{page-break-after:always;border:1px solid #ddd}
+  h2{page-break-before:always}
+  .formula-box{break-inside:avoid}
+  a{color:inherit}
+}
+@media print{
+  .lesson:last-child,.step:last-child{page-break-after:auto}
+}
 </style>
 </head>
 <body>
 <header>
-  <h1>⚙ PIPELINE HEADS — DESIGN REFERENCE CENTER</h1>
-  <span class="sub">DNV-ST-N001 · EC3 · API 5L · ASME · Roark — parametric, any pipe size</span>
+  <h1>📘 Pipeline Heads Design — Learning Center</h1>
+  <span class="sub">DNV-ST-N001 · Eurocode 3 · Roark — learn &amp; design for any pipe size</span>
 </header>
-<nav id="nav">
-  <button class="active" data-tab="overview">Overview</button>
-  <button data-tab="standards">Standards DB</button>
-  <button data-tab="guideline">Guideline</button>
-  <button data-tab="checks">Checks &amp; Formulas</button>
-  <button data-tab="materials">Materials</button>
-  <button data-tab="example">8" Example</button>
+<nav>
+  <button class="active" data-tab="overview">🏠 Overview</button>
+  <button data-tab="lesson">🎓 Lessons (10 checks)</button>
+  <button data-tab="standards">📚 Standards</button>
+  <button data-tab="guideline">🗺️ Guideline</button>
+  <button data-tab="materials">🧱 Materials</button>
+  <button data-tab="example">📊 8" Example</button>
+  <button class="no-print" onclick="window.print()" style="background:var(--green);color:#fff;border-color:var(--green)">🖨️ Print / PDF</button>
 </nav>
 
 <main>
 <!-- ============ OVERVIEW ============ -->
 <div class="tab active" id="tab-overview">
-  <h2>Design Workflow — At a Glance</h2>
+  <h2>Design Workflow at a Glance</h2>
+  <div class="sec-sub">The complete method for designing pipeline installation heads — start-up/laydown (A), A&amp;R (B), wet-buckle recovery (C).</div>
   <div class="grid g3">
-    <div class="card"><div class="label">Design Load (LRFD)</div><div class="value">F<sub>d</sub> = F<sub>SD</sub> × 1.3 × 1.3</div><div class="hint">γc=1.30 · γf=1.30 · DNV-ST-N001</div></div>
-    <div class="card"><div class="label">Safety Factors</div><div class="value">γm 1.15 · γmw 1.30</div><div class="hint">γQ 1.50 · DAF≈1.4 (lift 2.44)</div></div>
-    <div class="card"><div class="label">Acceptance</div><div class="value">UC ≤ 1.0</div><div class="hint">Unity check = stress / allowable</div></div>
-    <div class="card"><div class="label">Bearing Check</div><div class="value">0.18·√[Fd(1/Dp−1/Dh)Eβ/t]</div><div class="hint">DNV-ST-N001 §P2.7 (Dp/Dh&lt;0.94)</div></div>
-    <div class="card"><div class="label">Tear-Out</div><div class="value">1.7·Fd/[(2R−Dh)t]</div><div class="hint">≤ σy/γm</div></div>
-    <div class="card"><div class="label">Pin Gap</div><div class="value">≥ max(2mm, 3%D_pin)</div><div class="hint">DNV-ST-N001 §16.9.5</div></div>
+    <div class="card"><div class="label">Design Load — LRFD</div><div class="value">$F_d = F_{SD} \cdot \gamma_c \cdot \gamma_f$</div><div class="hint">γc = 1.30 · γf = 1.30 · DNV-ST-N001</div></div>
+    <div class="card"><div class="label">Safety Factors</div><div class="value">γm = 1.15 · γmw = 1.30</div><div class="hint">γQ = 1.50 · DAF ≈ 1.4 (lifting 2.44)</div></div>
+    <div class="card"><div class="label">Acceptance</div><div class="value">UC ≤ 1.0</div><div class="hint">Unity Check = stress ÷ allowable</div></div>
+    <div class="card"><div class="label">Bearing Contact</div><div class="value">$0.18\sqrt{F_d E\beta\left(\tfrac{1}{D_p}-\tfrac{1}{D_h}\right)/t}$</div><div class="hint">DNV-ST-N001 §P2.7 when $D_p/D_h < 0.94$</div></div>
+    <div class="card"><div class="label">Tear-Out</div><div class="value">$\dfrac{1.7 F_d}{(2R_{pad}-D_h)\,t}$</div><div class="hint">≤ σy/γm</div></div>
+    <div class="card"><div class="label">Pin Gap</div><div class="value">$\max(2\text{ mm},\ 3\% D_{pin})$</div><div class="hint">DNV-ST-N001 §16.9.5</div></div>
   </div>
-  <h3>Phases</h3>
+  <h2>Six Phases</h2>
   <div class="grid g3">
-    <div class="card"><div class="label" style="color:var(--green)">PHASE 0</div><div class="value" style="font-size:14px">Collect Inputs</div><div class="hint">DN, grade, F_nom, DAF, P_hydro, W, sling angles, shackle</div></div>
-    <div class="card"><div class="label" style="color:var(--green)">PHASE 1</div><div class="value" style="font-size:14px">Select Materials</div><div class="hint">API 5L · S355J0 · A694 · A193 B7 · KaMOS RTJ</div></div>
-    <div class="card"><div class="label" style="color:var(--green)">PHASE 2</div><div class="value" style="font-size:14px">Design Load</div><div class="hint">F_SD=max(F_nom·DAF, F_DL) → F_d=F_SD·γc·γf</div></div>
-    <div class="card"><div class="label" style="color:var(--green)">PHASE 3</div><div class="value" style="font-size:14px">Sizing</div><div class="hint">D_pin→D_hole→t_main→R_pad→t_cheek</div></div>
-    <div class="card"><div class="label" style="color:var(--green)">PHASE 4</div><div class="value" style="font-size:14px">10 Checks</div><div class="hint">Bearing→Tear-out→Welds→Sections→Closure→Shroud</div></div>
+    <div class="card"><div class="label" style="color:var(--green)">PHASE 0</div><div class="value" style="font-size:14px">Collect Inputs</div><div class="hint">DN, grade, F_nom, DAF, P_hydro, W, angles, shackle</div></div>
+    <div class="card"><div class="label" style="color:var(--green)">PHASE 1</div><div class="value" style="font-size:14px">Materials</div><div class="hint">API 5L · S355J0 · A694 · A193 B7 · KaMOS RTJ</div></div>
+    <div class="card"><div class="label" style="color:var(--green)">PHASE 2</div><div class="value" style="font-size:14px">Design Load</div><div class="hint">$F_{SD}=\max(F_{nom}DAF,\ F_{DL})$ → $F_d$</div></div>
+    <div class="card"><div class="label" style="color:var(--green)">PHASE 3</div><div class="value" style="font-size:14px">Sizing</div><div class="hint">D_pin → D_hole → t_main → R_pad → t_cheek</div></div>
+    <div class="card"><div class="label" style="color:var(--green)">PHASE 4</div><div class="value" style="font-size:14px">10 Checks</div><div class="hint">See 🎓 Lessons tab — each with formula + example</div></div>
     <div class="card"><div class="label" style="color:var(--green)">PHASE 5</div><div class="value" style="font-size:14px">Deliverables</div><div class="hint">Drawing + Report (UC table) + BOM</div></div>
   </div>
-  <div class="note">⚠ <b>Reference only:</b> the 8" IRENA3 numbers in this center are an <b>example</b> — always recalculate for your pipe size.</div>
+  <div class="learn">💡 <b>Learning mode:</b> open the <b>🎓 Lessons</b> tab — each of the 10 checks is explained step-by-step with its LaTeX formula, the variables explained, and a worked numerical example from the 8" case.</div>
+  <div class="tip">⚠ <b>Reference only:</b> the 8" IRENA3 numbers are an example — always recalculate for your pipe size.</div>
+</div>
+
+<!-- ============ LESSONS ============ -->
+<div class="tab" id="tab-lesson">
+  <h2>Lessons — The 10 Design Checks</h2>
+  <div class="sec-sub">Each lesson: what it protects against · the formula · variable meaning · worked example · acceptance.</div>
+
+  <div class="lesson">
+    <div class="l-head"><div class="l-num">1</div><div class="l-title">Bearing / Contact Stress</div><span class="badge blue">DNV-ST-N001 §P2.7</span></div>
+    <div class="l-body">
+      <b>Purpose:</b> prevents localized yielding where the shackle pin presses against the padeye hole (incl. cheek plates).
+      <div class="formula-box"><div class="f-title">Formula — concentrated contact if $D_p/D_h < 0.94$</div>
+        $$\frac{\sigma_y}{\gamma_m} \ge 0.18\sqrt{F_d \left(\frac{1}{D_p}-\frac{1}{D_h}\right)\frac{E\beta}{t}}$$
+      </div>
+      <div class="formula-box"><div class="f-title">Formula — conforming contact if $D_p/D_h \ge 0.94$</div>
+        $$\frac{\sigma_y}{\gamma_m} \ge 0.045\sqrt{\frac{F_d\, E\, \beta}{D_h\, t}}$$
+      </div>
+      <div class="learn"><b>Variables:</b> $F_d$ design load [N] · $D_p$ pin Ø [mm] · $D_h$ hole Ø [mm] · $E$ modulus [MPa] · $t$ plate thickness [mm] · $\beta$ contact factor (≈1) · $\gamma_m = 1.15$</div>
+      <div class="tip"><b>Worked example (8" A-head):</b> $F_d=887$ kN, $D_p=57$, $D_h=59$, $E=210000$, $t=40$ mm → bearing stress 262 MPa ≤ 300 = σy/γm → <b>UC = 0.87 PASS</b></div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="l-head"><div class="l-num">2</div><div class="l-title">Tear-Out (Shear-Out) Resistance</div><span class="badge blue">DNV-ST-N001</span></div>
+    <div class="l-body">
+      <b>Purpose:</b> prevents the pin from shearing through the material between hole and plate edge.
+      <div class="formula-box"><div class="f-title">Formula</div>
+        $$\frac{\sigma_y}{\gamma_m} \ge \frac{1.7\, F_d}{(2 R_{pad} - D_h)\, t}$$
+      </div>
+      <div class="learn"><b>Variables:</b> $R_{pad}$ padeye radius [mm] · $D_h$ hole Ø · $t$ plate thickness · $1.7$ empirical factor (DNV)</div>
+      <div class="tip"><b>Example:</b> 82 MPa ≤ 300 → <b>UC = 0.27 PASS</b></div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="l-head"><div class="l-num">3</div><div class="l-title">Cheek Plate Welds</div><span class="badge blue">DNV-ST-N001</span></div>
+    <div class="l-body">
+      <b>Purpose:</b> verifies the fillet weld joining cheek plates to the main plate.
+      <div class="formula-box"><div class="f-title">Formula</div>
+        $$\frac{\sigma_y}{\gamma_{mw}} \ge \frac{F_d\, t_{ch}\, \delta}{1.5\, t\, D_{ch}\, a} \qquad \delta = \frac{4\tan(v)\,h}{t}+1$$
+      </div>
+      <div class="learn"><b>Variables:</b> $t_{ch}$ cheek thickness · $D_{ch}$ cheek Ø · $a$ weld throat · $h$ weld height · $v$ angle · $\gamma_{mw}=1.30$</div>
+      <div class="tip"><b>Example:</b> 114 MPa ≤ 265 → <b>UC = 0.43 PASS</b></div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="l-head"><div class="l-num">4</div><div class="l-title">Main Plate → Pipe Weld</div><span class="badge blue">DNV-ST-N001 · directional</span></div>
+    <div class="l-body">
+      <b>Purpose:</b> the critical weld between padeye main plate and pipe, under $F_d$ + in-plane/out-of-plane moments.
+      <div class="formula-box"><div class="f-title">Formula — directional (von Mises) method</div>
+        $$\sqrt{\sigma_\perp^2 + 3\left(\tau_\perp^2 + \tau_\parallel^2\right)} \le \frac{f_u}{\gamma_{mw}}$$
+      </div>
+      <div class="learn"><b>Variables:</b> $\sigma_\perp$ normal stress on throat · $\tau_\perp,\ \tau_\parallel$ shear components · $f_u$ ultimate strength · $\gamma_{mw}=1.30$</div>
+      <div class="tip"><b>Example:</b> 132 MPa ≤ 346 → <b>UC = 0.38 PASS</b></div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="l-head"><div class="l-num">5</div><div class="l-title">Sectional Verifications (0-0 … 3-3)</div><span class="badge blue">EN 1993-1-1 §6.2</span></div>
+    <div class="l-body">
+      <b>Purpose:</b> combined axial + bending + shear at critical cross-sections of the head (Fig. lateral view).
+      <div class="formula-box"><div class="f-title">Formula</div>
+        $$\frac{\sigma_y}{\gamma_m} \ge \sqrt{(\sigma_{axial}+\sigma_{bend})^2 + 3\,\tau_{shear}^2}$$
+      </div>
+      <div class="learn"><b>Variables:</b> $\sigma_{axial}$ from $F_d$ · $\sigma_{bend}$ from 5°+5° moments · $\tau_{shear}$ transverse · $\gamma_m=1.15$</div>
+      <div class="tip"><b>Example (section 3-3, worst):</b> 225 MPa ≤ 300 → <b>UC = 0.75 PASS</b>. Always check ALL sections.</div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="l-head"><div class="l-num">6</div><div class="l-title">Closure Plate</div><span class="badge blue">Roark Table 11.2</span></div>
+    <div class="l-body">
+      <b>Purpose:</b> solid semicircular plate at the pipe end, fixed straight edges, loaded by hydrotest pressure.
+      <div class="formula-box"><div class="f-title">Formula — radial bending stresses at A, B, C</div>
+        $$\sigma_A = -0.42\, P_{LD}\frac{a^2}{t^2} \qquad \sigma_B = -0.36\, P_{LD}\frac{a^2}{t^2} \qquad \sigma_C = +0.21\, P_{LD}\frac{a^2}{t^2}$$
+      </div>
+      <div class="formula-box"><div class="f-title">Acceptance</div>
+        $$UC = \frac{\max(|\sigma_A|,|\sigma_B|,|\sigma_C|)}{f_{yd}} \le 1 \qquad P_{LD}=\gamma_Q P_{hydro},\ f_{yd}=\frac{f_y}{\gamma_m}$$
+      </div>
+      <div class="learn"><b>Variables:</b> $a$ plate radius · $t$ thickness · $P_{hydro}$ hydrotest pressure · $\gamma_Q=1.50$, $\gamma_m=1.15$</div>
+      <div class="tip"><b>Example:</b> max 66 MPa ≤ 300 → <b>UC = 0.22 PASS</b></div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="l-head"><div class="l-num">7</div><div class="l-title">Pig Stopper</div><span class="badge blue">Design</span></div>
+    <div class="l-body">
+      <b>Purpose:</b> stops the pig from exiting the pipe end during flooding/gauging.
+      <div class="formula-box"><div class="f-title">Formula</div>
+        $$\sigma = \frac{F_d}{A_{effective}} \le \frac{\sigma_y}{\gamma_m}$$
+      </div>
+      <div class="tip"><b>Example:</b> 109 MPa ≤ 291 → <b>UC = 0.37 PASS</b></div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="l-head"><div class="l-num">8</div><div class="l-title">Threadolet Weld</div><span class="badge blue">EC3</span></div>
+    <div class="l-body">
+      <b>Purpose:</b> weld of the vent/pigging threadolet under hydrotest pressure.
+      <div class="formula-box"><div class="f-title">Formula — simplified method</div>
+        $$\frac{P\, \gamma_Q\, A_{hole}}{A_{weld}} \le \frac{\sigma_u}{0.9\,\gamma_{mw}\sqrt{3}}$$
+      </div>
+      <div class="tip"><b>Example:</b> 17 MPa ≤ 232 → <b>UC = 0.07 PASS</b></div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="l-head"><div class="l-num">9</div><div class="l-title">Lifting Padeye (all heads)</div><span class="badge blue">DNV-N001 · DAF 2.44</span></div>
+    <div class="l-body">
+      <b>Purpose:</b> handles the head weight during handling. 
+      <div class="formula-box"><div class="f-title">Design load &amp; checks</div>
+        $$F_d = \gamma_Q \cdot DAF \cdot W_{max} \qquad f_p = \frac{F_d}{D_{ph}\, t} \le \frac{\sigma_y}{\gamma_m} \qquad \tau_{Ed}=\frac{F_d}{A_{shear}}\le\frac{\sigma_y}{\gamma_m\sqrt{3}} \qquad \sigma_{weld}=\frac{F_d}{A_{weld}}\le\frac{f_u}{0.9\gamma_{mw}\sqrt{3}}$$
+      </div>
+      <div class="learn"><b>Variables:</b> $W_{max}$ head weight · $\gamma_Q=1.50$ · $DAF=2.44$ · $\gamma_m=1.15$ · $\gamma_{mw}=1.30$</div>
+      <div class="tip"><b>Example:</b> bearing 192 ≤ 300 (0.64) · shear-out 96 ≤ 173 (0.55) · weld 84 ≤ 232 (0.36) — all PASS</div>
+    </div>
+  </div>
+
+  <div class="lesson">
+    <div class="l-head"><div class="l-num">10</div><div class="l-title">Shroud (Start-up / Laydown)</div><span class="badge blue">DNV-N001 + EC3</span></div>
+    <div class="l-body">
+      <b>Purpose:</b> protects the head on the roller during lay; checks bending + clamp bolts + torque.
+      <div class="formula-box"><div class="f-title">Bending &amp; bolts</div>
+        $$M_{max}=\gamma_Q R_v\frac{L}{4} \qquad \sigma_{bend}=\frac{M_{max}}{W} \le \frac{\sigma_y}{\gamma_m} \qquad F_{AX}=\gamma_Q R_v(\tan\theta+\mu_{roll})$$
+        $$R_d=\frac{1}{\gamma_m}\mu_{clamp}T_b \qquad T_b = 0.70\, f_{ub}\, A_s \qquad M_{torque}=k\,d\,T_{sel}$$
+      </div>
+      <div class="learn"><b>Variables:</b> $R_v$ roller load · $L$ span · $W$ section modulus · $\theta=14°$ · $\mu=0.3$ · $T_b$ bolt pretension · $k=0.2$ torque coefficient</div>
+      <div class="tip"><b>Example:</b> M24×8 bolts, bending 36 ≤ 309 → <b>UC = 0.12 PASS</b></div>
+    </div>
+  </div>
 </div>
 
 <!-- ============ STANDARDS ============ -->
 <div class="tab" id="tab-standards">
-  <h2>Standards Database — when to use what</h2>
-  <input type="search" id="stdSearch" placeholder="Search standards, keywords, formulas...">
+  <h2>Standards Database</h2>
+  <div class="sec-sub">Search by name, keyword or formula — see when to use each standard.</div>
+  <input type="search" id="stdSearch" placeholder="🔍 Search standards, keywords, formulas…">
   <div id="stdList"></div>
 </div>
 
@@ -99,68 +269,51 @@ footer{background:#1a1d23;border-top:1px solid var(--border);padding:6px 20px;fo
 <div class="tab" id="tab-guideline">
   <h2>Step-by-Step Guideline</h2>
   <div class="step"><div class="ph">PHASE 0 — Collect Inputs (from Pipelay Analysis / client)</div>
-    <ul><li><b>DN [in]</b>, pipe grade, t_pipe</li><li><b>F_nom [kN]</b>, DAF, dynamic load F_DL</li><li><b>P_hydro [MPa]</b>, head weight W [t]</li><li>Head types (A: SU/LD, B: A&amp;R, C: WBR), sling angles (5°+5°)</li><li>Shackle available (WLL, pin Ø)</li></ul></div>
-  <div class="step"><div class="ph">PHASE 1 — Materials (decision table)</div>
-    <ul><li>Pipe → API 5L (match line grade)</li><li>Plates → EN 10025 S355J0/J2</li><li>Flange → ASTM A694 F52/F60/F65</li><li>Bolts → A193 B7 PTFE · Nuts → A194 2H · Gasket → KaMOS RTJ</li></ul></div>
+    <ul><li><b>DN [in]</b>, pipe grade, t_pipe</li><li><b>F_nom [kN]</b>, DAF, dynamic load F_DL</li><li><b>P_hydro [MPa]</b>, head weight W [t]</li><li>Head types (A: SU/LD · B: A&amp;R · C: WBR), sling angles 5°+5°</li><li>Shackle (WLL, pin Ø)</li></ul></div>
+  <div class="step"><div class="ph">PHASE 1 — Materials</div>
+    <ul><li>Pipe → API 5L · Plates → S355J0/J2 · Flange → A694 F52/60/65</li><li>Bolts → A193 B7 PTFE · Nuts → A194 2H · Gasket → KaMOS RTJ</li></ul></div>
   <div class="step"><div class="ph">PHASE 2 — Design Load (LRFD)</div>
-    <div class="formula">F_SD = max(F_nom × DAF, F_DL) &nbsp;&nbsp;→&nbsp;&nbsp; F_d = F_SD × γc × γf</div>
-    <ul><li>γc=1.30, γf=1.30, DAF≈1.4 (DNV Table 16-1)</li><li>Apply 5° in-plane + 5° out-of-plane components</li><li>Shackle: WLL ≥ F_SD</li></ul></div>
+    <div class="formula-box">$$F_{SD} = \max(F_{nom}\cdot DAF,\ F_{DL}) \quad \longrightarrow \quad F_d = F_{SD}\cdot\gamma_c\cdot\gamma_f$$</div>
+    <ul><li>γc = 1.30, γf = 1.30, DAF ≈ 1.4 (DNV Table 16-1)</li><li>Apply 5° in-plane + 5° out-of-plane components</li><li>Shackle: WLL ≥ F_SD</li></ul></div>
   <div class="step"><div class="ph">PHASE 3 — Preliminary Sizing</div>
-    <ul><li>D_pin from shackle catalog → D_hole = D_pin + GAP (GAP ≥ max(2mm, 3%D_pin))</li><li>t_main ≈ F_d/(σ_allow·D_pin) first guess</li><li>R_pad ≈ 1.5·D_hole, t_cheek ≈ 0.5·t_main</li></ul></div>
-  <div class="step"><div class="ph">PHASE 4 — Run the 10 checks (see Checks tab)</div>
-    <ul><li>Bearing → Tear-out → Cheek weld → Main weld → Sections 0-0..3-3 → Closure plate → Pig stopper → Threadolet → Lifting padeye → Shroud</li></ul></div>
+    <ul><li>D_pin from shackle catalog → D_hole = D_pin + GAP, GAP ≥ max(2mm, 3%D_pin)</li><li>t_main ≈ F_d/(σ_allow·D_pin) · R_pad ≈ 1.5·D_hole · t_cheek ≈ 0.5·t_main</li></ul></div>
+  <div class="step"><div class="ph">PHASE 4 — Run the 10 Checks (🎓 Lessons tab)</div>
+    <ul><li>Bearing → Tear-out → Cheek weld → Main weld → Sections → Closure → Pig stopper → Threadolet → Lifting → Shroud</li></ul></div>
   <div class="step"><div class="ph">PHASE 5 — Deliverables</div>
-    <ul><li>Drawing: assembly + details + BOM</li><li>Report: 1 Intro · 2 Defs · 3 Refs · 4 Scope · 5 Summary (UC table!) · 6 Design data · 7 Methodology · 8 Results · 9 Appendices</li></ul></div>
-  <h3>Common Pitfalls</h3>
+    <ul><li>Drawing: assembly + details + BOM</li><li>Report: Intro · Defs · Refs · Scope · Summary (UC table!) · Design data · Methodology · Results · Appendices</li></ul></div>
+  <h2>Common Pitfalls</h2>
   <table><tr><th>#</th><th>Pitfall</th><th>Fix</th></tr>
-  <tr><td>1</td><td>Forgetting 5° out-of-plane angle</td><td>Real load component — include it</td></tr>
-  <tr><td>2</td><td>Wrong DAF (lifting vs pull)</td><td>Lift 2.44 ≠ pull ≈1.4</td></tr>
-  <tr><td>3</td><td>γmw weld ≠ γm material</td><td>1.30 vs 1.15</td></tr>
-  <tr><td>4</td><td>Pin gap too small</td><td>≥ max(2mm, 3%D_pin)</td></tr>
-  <tr><td>5</td><td>Units kN vs N, mm vs m</td><td>Consistent SI</td></tr>
-  <tr><td>6</td><td>S355 SMYS by thickness</td><td>355/345/335 (t≤16/40/63)</td></tr>
-  <tr><td>7</td><td>Only checking section 3-3</td><td>All sections 0-0..3-3</td></tr>
-  <tr><td>8</td><td>Missing Hertz check (Head C)</td><td>Pin-pipe contact — critical (0.88 in example)</td></tr></table>
-</div>
-
-<!-- ============ CHECKS ============ -->
-<div class="tab" id="tab-checks">
-  <h2>10 Design Checks — Formulas</h2>
-  <table id="checksTable">
-    <tr><th>#</th><th>Check</th><th>Formula</th><th>Standard</th><th>Example 8" UC</th></tr>
-  </table>
-  <h3>Safety Factors Summary</h3>
-  <table><tr><th>Factor</th><th>Value</th><th>Standard</th></tr>
-  <tr><td>γc consequence</td><td class="mono">1.30</td><td>DNV-ST-N001</td></tr>
-  <tr><td>γf load</td><td class="mono">1.30</td><td>DNV-ST-N001</td></tr>
-  <tr><td>γm material</td><td class="mono">1.15</td><td>DNV / EC3</td></tr>
-  <tr><td>γmw weld</td><td class="mono">1.30</td><td>DNV / EC3</td></tr>
-  <tr><td>γQ variable load</td><td class="mono">1.50</td><td>EC3</td></tr>
-  <tr><td>DAF pull</td><td class="mono">≈1.40</td><td>DNV Table 16-1</td></tr>
-  <tr><td>DAF lifting</td><td class="mono">2.44</td><td>DNV</td></tr></table>
+  <tr><td>1</td><td>Forgetting the 5° out-of-plane angle</td><td>Real load component — include it</td></tr>
+  <tr><td>2</td><td>Wrong DAF (lifting vs pull)</td><td>Lift 2.44 ≠ pull ≈ 1.4</td></tr>
+  <tr><td>3</td><td>γmw (weld) = γm (material)</td><td>1.30 vs 1.15</td></tr>
+  <tr><td>4</td><td>Pin gap too small</td><td>≥ max(2 mm, 3% D_pin)</td></tr>
+  <tr><td>5</td><td>Units kN vs N, mm vs m</td><td>Keep consistent SI</td></tr>
+  <tr><td>6</td><td>S355 SMYS varies with thickness</td><td>355 / 345 / 335 (t ≤ 16 / 40 / 63)</td></tr>
+  <tr><td>7</td><td>Only checking section 3-3</td><td>Check ALL sections 0-0…3-3</td></tr>
+  <tr><td>8</td><td>Missing Hertz check (Head C)</td><td>Pin-pipe contact — critical (0.88 example)</td></tr></table>
 </div>
 
 <!-- ============ MATERIALS ============ -->
 <div class="tab" id="tab-materials">
   <h2>Materials</h2>
-  <h3>Line Pipe — API 5L</h3>
+  <h2 style="font-size:15px">Line Pipe — API 5L</h2>
   <table><tr><th>Grade</th><th>SMYS [MPa]</th><th>SMTS [MPa]</th></tr>
   <tr><td>X52</td><td>360</td><td>460</td></tr>
   <tr><td>X60</td><td>415</td><td>520</td></tr>
   <tr><td>X65</td><td>450</td><td>535</td></tr>
   <tr><td>X70</td><td>485</td><td>570</td></tr></table>
-  <h3>Plates — EN 10025 S355J0/J2</h3>
+  <h2 style="font-size:15px">Plates — EN 10025 S355J0/J2</h2>
   <table><tr><th>t [mm]</th><th>SMYS [MPa]</th><th>SMTS [MPa]</th></tr>
   <tr><td>t ≤ 16</td><td>355</td><td>470</td></tr>
   <tr><td>16 &lt; t ≤ 40</td><td>345</td><td>470</td></tr>
   <tr><td>40 &lt; t ≤ 63</td><td>335</td><td>470</td></tr></table>
-  <h3>Flanges / Bolts / Gasket</h3>
+  <h2 style="font-size:15px">Flanges / Bolts / Gasket</h2>
   <table><tr><th>Component</th><th>Material</th><th>Notes</th></tr>
   <tr><td>Flange</td><td>ASTM A694 F52/F60/F65</td><td>F60: 415/520 · F65: 450/530</td></tr>
-  <tr><td>Stud bolts</td><td>ASTM A193 B7</td><td>725/860, PTFE-coated offshore</td></tr>
+  <tr><td>Stud bolts</td><td>ASTM A193 B7</td><td>725/860 · PTFE-coated offshore</td></tr>
   <tr><td>Nuts</td><td>ASTM A194 2H</td><td>PTFE-coated</td></tr>
-  <tr><td>Gasket</td><td>KaMOS RTJ Octagonal SS316</td><td>High pressure offshore</td></tr></table>
-  <div class="note">Common: E=210 GPa · ν=0.3 · ρ=7850 kg/m³ (steel)</div>
+  <tr><td>Gasket</td><td>KaMOS RTJ Octagonal SS316</td><td>High-pressure offshore</td></tr></table>
+  <div class="learn">Common: E = 210 GPa · ν = 0.3 · ρ = 7850 kg/m³</div>
 </div>
 
 <!-- ============ EXAMPLE ============ -->
@@ -168,11 +321,11 @@ footer{background:#1a1d23;border-top:1px solid var(--border);padding:6px 20px;fo
   <h2>8" IRENA3 Example — Reference Only</h2>
   <div class="grid g2">
     <div class="card"><div class="label">Pipe</div><div class="value" style="font-size:14px">API 5L X60 · OD 219.1 · WT 12.7</div><div class="hint">SMYS 415 · SMTS 520</div></div>
-    <div class="card"><div class="label">Design Loads</div><div class="value" style="font-size:14px">A: 887 · B: 840 · C: 836 kN</div><div class="hint">F_d = F_SD × 1.3 × 1.3</div></div>
+    <div class="card"><div class="label">Design Loads</div><div class="value" style="font-size:14px">A: 887 · B: 840 · C: 836 kN</div><div class="hint">$F_d = F_{SD}\times 1.3\times 1.3$</div></div>
     <div class="card"><div class="label">Shackle</div><div class="value" style="font-size:14px">Wide Body 55t P-6013</div><div class="hint">WLL 540 kN ≥ 527</div></div>
     <div class="card"><div class="label">Pins</div><div class="value" style="font-size:14px">57/59 · 107/110 mm</div><div class="hint">gap 2.0 / 3.0 mm</div></div>
   </div>
-  <h3>Results (all PASS — worst UC)</h3>
+  <h2 style="font-size:15px">Results — all PASS (worst UC)</h2>
   <table><tr><th>Check</th><th>Stress [MPa]</th><th>Allowable [MPa]</th><th>UC</th><th>Status</th></tr>
   <tr><td>Padeye Bearing (A)</td><td>262</td><td>300</td><td>0.87</td><td><span class="badge ok">PASS</span></td></tr>
   <tr><td>Section 3-3 (A)</td><td>225</td><td>300</td><td>0.75</td><td><span class="badge ok">PASS</span></td></tr>
@@ -180,67 +333,55 @@ footer{background:#1a1d23;border-top:1px solid var(--border);padding:6px 20px;fo
   <tr><td>Lateral Plates 2-2 (C)</td><td>246</td><td>300</td><td>0.82</td><td><span class="badge ok">PASS</span></td></tr>
   <tr><td>Lifting Padeye Bearing</td><td>192</td><td>300</td><td>0.64</td><td><span class="badge ok">PASS</span></td></tr>
   <tr><td>Shroud Bending</td><td>36</td><td>309</td><td>0.12</td><td><span class="badge ok">PASS</span></td></tr></table>
+  <div class="tip">⚠ These numbers belong to the 8" project only. For any other pipe size: recalculate from the formulas in 🎓 Lessons.</div>
 </div>
 </main>
-<footer><span>Design Reference Center · v1.0</span><span>DNV-ST-N001 · EC3 · Roark — parametric, recalculate per project</span></footer>
+
+<footer>
+  <span>Pipeline Heads Design — Learning Center v2.0</span>
+  <span>DNV-ST-N001 · EC3 · Roark — parametric, recalculate per project</span>
+</footer>
 
 <script>
 const STANDARDS = [
- {cat:"Marine Ops", code:"DNV-ST-N001", use:"Lifting/A&R equipment, padeyes, heads, shackles, shroud", key:"Fd=FSD×1.3×1.3; γm=1.15; γmw=1.30; DAF≈1.4; 5°+5°; gap≥max(2mm,3%Dp)", when:"Installation equipment design"},
- {cat:"Subsea", code:"DNV-ST-F101", use:"Submarine pipeline systems — wall thickness, collapse, fatigue", key:"LRFD limit-state (no 0.72! that's RP-F101); γm/γSC/γC", when:"Pipeline itself, not heads"},
+ {cat:"Marine Ops", code:"DNV-ST-N001", use:"Lifting/A&R equipment, padeyes, heads, shackles, shroud", key:"$F_d=F_{SD}\cdot\gamma_c\cdot\gamma_f$ · γm=1.15 · γmw=1.30 · DAF≈1.4 · gap ≥ max(2mm, 3%Dp)", when:"Installation equipment design"},
+ {cat:"Subsea", code:"DNV-ST-F101", use:"Submarine pipeline systems — wall thickness, collapse, fatigue", key:"LRFD limit-state (no 0.72! that's RP-F101)", when:"Pipeline itself, not heads"},
  {cat:"Subsea", code:"DNV-RP-F101", use:"Corroded pipeline remaining strength", key:"0.72×SMYS hoop criterion", when:"Corrosion assessment"},
- {cat:"Steel", code:"EN 1993 EC3", use:"Sections, columns, plates, welds", key:"σy/γm ≥ √[(σax+σbend)²+3τ²]; weld directional ≤ fu/γmw", when:"All structural checks"},
- {cat:"Steel", code:"Roark's Formulas (7th)", use:"Non-standard plate bending", key:"Table 11.2 semicircular fixed: σA=−0.42Pa²/t², σB=−0.36, σC=+0.21; Table 11.4 clamp", when:"Closure plate, clamp wings"},
- {cat:"Flanges", code:"ASME B16.5", use:"Flanges ≤24\", classes 150-2500", key:"Weldneck 8\" 900# RTJ used in example", when:"Flange selection"},
+ {cat:"Steel", code:"EN 1993 EC3", use:"Sections, plates, welds", key:"$\\sigma_y/\\gamma_m \\ge \\sqrt{(\\sigma_{ax}+\\sigma_{bend})^2+3\\tau^2}$", when:"All structural checks"},
+ {cat:"Steel", code:"Roark's Formulas (7th)", use:"Non-standard plate bending", key:"Table 11.2: $\\sigma_A=-0.42Pa^2/t^2$, $\\sigma_B=-0.36$, $\\sigma_C=+0.21$", when:"Closure plate, clamp wings"},
+ {cat:"Flanges", code:"ASME B16.5", use:"Flanges ≤24\", classes 150-2500", key:"8\" 900# RTJ weldneck used in example", when:"Flange selection"},
  {cat:"Flanges", code:"ASME B16.47", use:"Large diameter flanges >24\"", key:"Series A/B", when:"DN > 24\""},
- {cat:"Pressure", code:"ASME VIII-2 Part 5", use:"Design by analysis (FEM linearization)", key:"Pm≤S=min(Su/2.4,Sy/1.5); PL+Pb≤SPL=max(1.5S,Sy) capped if Sy/Su>0.70; weld-toe peak disregarded", when:"FEM stress check with internal pressure"},
+ {cat:"Pressure", code:"ASME VIII-2 Part 5", use:"Design by analysis (FEM linearization)", key:"Pm≤S=min(Su/2.4,Sy/1.5); PL+Pb≤SPL capped if Sy/Su>0.70", when:"FEM with internal pressure"},
  {cat:"Materials", code:"API 5L", use:"Line pipe grades", key:"X52 360/460 · X60 415/520 · X65 450/535 · X70 485/570", when:"Pipe selection"},
- {cat:"Materials", code:"ASTM A694", use:"Forged flanges for pipelines", key:"F52 360/485 · F60 415/520 · F65 450/530; NOT in ASME II-D", when:"Flange material"},
- {cat:"Materials", code:"EN 10025", use:"Structural plates", key:"S355J0: 355/345/335 by t, SMTS 470; J2 for low temp", when:"Plate selection"},
+ {cat:"Materials", code:"ASTM A694", use:"Forged flanges", key:"F52 360/485 · F60 415/520 · F65 450/530", when:"Flange material"},
+ {cat:"Materials", code:"EN 10025", use:"Structural plates", key:"S355J0: 355/345/335 by t, SMTS 470", when:"Plate selection"},
  {cat:"Materials", code:"ASTM A193/A194", use:"Bolts & nuts", key:"B7 725/860; 2H nuts; PTFE offshore", when:"Fasteners"},
  {cat:"Fatigue", code:"DNV-RP-C203", use:"Fatigue S-N curves", key:"S-N design curves for welded joints", when:"Repeated/dynamic loading"},
 ];
-
 function renderStandards(filter){
-  const list = document.getElementById('stdList');
-  const q = (filter||'').toLowerCase();
-  const rows = STANDARDS.filter(s => !q || JSON.stringify(s).toLowerCase().includes(q));
-  list.innerHTML = rows.map(s => `
+  const q=(filter||'').toLowerCase();
+  const rows=STANDARDS.filter(s=>!q||JSON.stringify(s).toLowerCase().includes(q));
+  document.getElementById('stdList').innerHTML=rows.map(s=>`
     <div class="card" style="margin-bottom:10px">
       <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
-        <b style="color:var(--accent);font-family:Consolas">${s.code}</b>
-        <span class="chip">${s.cat}</span>
+        <b style="color:var(--primary);font-family:Arial;font-size:14px">${s.code}</b><span class="chip">${s.cat}</span>
       </div>
-      <div style="font-size:12.5px;margin-top:6px"><b>Use:</b> ${s.use}</div>
-      <div class="formula" style="margin-top:6px;font-size:11.5px">${s.key}</div>
-      <div class="hint" style="margin-top:6px;font-size:11px;color:var(--muted)"><b>When:</b> ${s.when}</div>
+      <div style="font-size:13px;margin-top:8px"><b>Use:</b> ${s.use}</div>
+      <div class="formula-box" style="margin-top:8px;font-size:12.5px">${s.key}</div>
+      <div style="margin-top:6px;font-size:12px;color:var(--muted)"><b>When:</b> ${s.when}</div>
     </div>`).join('');
+  if(window.MathJax) MathJax.typesetPromise && MathJax.typesetPromise();
 }
-document.getElementById('stdSearch').addEventListener('input', e => renderStandards(e.target.value));
+document.getElementById('stdSearch').addEventListener('input',e=>renderStandards(e.target.value));
 renderStandards();
 
-const CHECKS = [
- ["1","Bearing / Contact","Dp/Dh<0.94: σy/γm ≥ 0.18·√[Fd(1/Dp−1/Dh)·E·β/t]<br>Dp/Dh≥0.94: σy/γm ≥ 0.045·√[Fd·E·β/(Dh·t)]","DNV-ST-N001 §P2.7","0.87"],
- ["2","Tear Out","σy/γm ≥ 1.7·Fd/[(2R_pad−Dh)·t]","DNV-ST-N001","0.27"],
- ["3","Cheek Plate Weld","σy/γmw ≥ Fd·tch·δ/(1.5·t·Dch·a), δ=4tan(v)·h/t+1","DNV-ST-N001","0.43"],
- ["4","Main Plate→Pipe Weld","√[σ⊥²+3(τ⊥²+τ∥²)] ≤ fu/γmw (directional, incl. M_in & M_out)","DNV-ST-N001","0.38"],
- ["5","Sections 0-0..3-3","σy/γm ≥ √[(σax+σbend)²+3·τ²]","EC3 §6.2","0.75"],
- ["6","Closure Plate","σA=−0.42·PLD·a²/t² · σB=−0.36· · σC=+0.21· (PLD=γQ·Phydro)","Roark 11.2","0.22"],
- ["7","Pig Stopper","σ = Fd/A_eff ≤ σy/γm","—","0.37"],
- ["8","Threadolet Weld","P·γQ·Ahole/Aweld ≤ σu/(0.9·γmw·√3)","EC3","0.07"],
- ["9","Lifting Padeye","Fd=γQ·DAF·W; bearing ≤σy/γm · shearout ≤σy/(γm√3) · weld ≤fu/(0.9γmw√3)","DNV-N001","0.64"],
- ["10","Shroud","M=γQ·Rv·L/4 → σ=M/W ≤σy/γm; bolts FAX=γQ·Rv(tanθ+μ), Rd=(1/γm)·μ·Tb, Tb=0.7·fub·As; torque k·d·Tsel","DNV-N001 / EC3","0.23"],
-];
-document.getElementById('checksTable').innerHTML += CHECKS.map(c => `
-  <tr><td>${c[0]}</td><td><b>${c[1]}</b></td><td class="mono" style="font-size:11.5px">${c[2]}</td><td>${c[3]}</td>
-  <td>${c[4]} <span class="badge ok">PASS</span></td></tr>`).join('');
-
-document.getElementById('nav').addEventListener('click', e => {
-  if(e.target.tagName !== 'BUTTON') return;
-  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+document.getElementById('nav').addEventListener('click',e=>{
+  if(e.target.tagName!=='BUTTON'||e.target.classList.contains('no-print'))return;
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
   e.target.classList.add('active');
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('tab-' + e.target.dataset.tab).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+e.target.dataset.tab).classList.add('active');
+  if(window.MathJax&&window.MathJax.typesetPromise)MathJax.typesetPromise();
 });
 </script>
 </body>
