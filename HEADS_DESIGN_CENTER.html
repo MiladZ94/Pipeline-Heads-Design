@@ -106,9 +106,9 @@ input[type=search]{width:100%;max-width:380px;background:var(--card-inner);borde
 input[type=search]:focus{outline:none;border-color:var(--primary)}
 .chip{display:inline-block;background:var(--card-inner);border:1px solid var(--border);border-radius:10px;padding:2px 7px;font-size:10.5px;color:var(--muted)}
 
-.step{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:8px}
-.step .ph{font-weight:700;color:var(--primary);font-size:12.5px;margin-bottom:4px}
-.step ul{margin-left:16px;font-size:12px;line-height:1.5}
+.step{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px 16px;margin-bottom:10px}
+.step .ph{font-weight:700;color:var(--primary);font-size:13px;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between}
+.step ul{margin-left:18px;font-size:12px;line-height:1.6}
 
 /* PRINT STYLES - A4 Optimized */
 @media print{
@@ -438,41 +438,217 @@ input[type=search]:focus{outline:none;border-color:var(--primary)}
 <div class="tab" id="tab-guideline">
   <div class="page-header">
     <div>
-      <h2>Step-by-Step Guideline</h2>
-      <div class="sec-sub">Phases of design and common engineering pitfalls.</div>
+      <h2>Complete Engineering Design Guideline (Phase 0 → Phase 5)</h2>
+      <div class="sec-sub">Step-by-step master handbook: Input collection, material selection, LRFD load calculation, geometry sizing, 10 structural checks, and deliverable package.</div>
     </div>
   </div>
 
-  <div class="grid g2">
-    <div>
-      <div class="step"><div class="ph">PHASE 0 — Collect Inputs</div>
-        <ul><li><b>DN [in]</b>, pipe grade, t_pipe</li><li><b>F_nom [kN]</b>, DAF, dynamic load F_DL</li><li><b>P_hydro [MPa]</b>, head weight W [t]</li><li>Head types (A: SU/LD · B: A&amp;R · C: WBR), sling angles 5°+5°</li></ul></div>
-      <div class="step"><div class="ph">PHASE 1 — Materials</div>
-        <ul><li>Pipe → API 5L · Plates → S355J0/J2 · Flange → A694 F52/60/65</li><li>Bolts → A193 B7 PTFE · Nuts → A194 2H · Gasket → KaMOS RTJ</li></ul></div>
-      <div class="step"><div class="ph">PHASE 2 — Design Load (LRFD)</div>
-        <div class="formula-box">$$F_{SD} = \max(F_{nom}\cdot DAF,\ F_{DL}) \quad \longrightarrow \quad F_d = F_{SD}\cdot\gamma_c\cdot\gamma_f$$</div>
-        <ul><li>γc = 1.30, γf = 1.30, DAF ≈ 1.4 (DNV Table 16-1)</li></ul></div>
+  <!-- PHASE 0 -->
+  <div class="step">
+    <div class="ph">
+      <span>PHASE 0 — Collect Inputs (Project Data &amp; Client Requirements)</span>
+      <span class="badge blue">Prerequisite Step</span>
     </div>
-    <div>
-      <div class="step"><div class="ph">PHASE 3 — Preliminary Sizing</div>
-        <ul><li>D_pin from shackle catalog → D_hole = D_pin + GAP</li><li>t_main ≈ F_d/(σ_allow·D_pin) · R_pad ≈ 1.5·D_hole</li></ul></div>
-      <div class="step"><div class="ph">PHASE 4 — Run 10 Checks</div>
-        <ul><li>Bearing → Tear-out → Cheek weld → Main weld → Sections → Closure → Pig stopper → Threadolet → Lifting → Shroud</li></ul></div>
-      <div class="step"><div class="ph">PHASE 5 — Deliverables</div>
-        <ul><li>Drawing: assembly + details + BOM</li><li>Report: Intro · Defs · Refs · Scope · Summary (UC table!) · Appendices</li></ul></div>
+    <div class="sec-sub" style="margin-bottom:8px">Gather all design data from Client Specs, Pipelay Analysis Report, and Marine Warranty Surveyor (MWS) requirements before starting calculations:</div>
+    <table>
+      <thead>
+        <tr><th>#</th><th>Input Parameter</th><th>Symbol</th><th>Source / Origin</th><th>Engineering Purpose</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>Nominal Pipe Diameter</td><td>DN [in] / OD [mm]</td><td>Client Pipelay Spec</td><td>Defines head pipe size, padeye interface &amp; flange sizing</td></tr>
+        <tr><td>2</td><td>Wall Thickness &amp; Grade</td><td>$t_{pipe}$ / API 5L</td><td>Line Pipe Spec</td><td>Determines pipe yield strength (SMYS/SMTS) &amp; weld thickness</td></tr>
+        <tr><td>3</td><td>Nominal Pull Force</td><td>$F_{nom}$ [kN]</td><td>Pipelay Analysis Report</td><td>Primary tension load for installation, A&amp;R, or recovery</td></tr>
+        <tr><td>4</td><td>Dynamic Amplification Factor</td><td>DAF</td><td>DNV-ST-N001 Table 16-1</td><td>Account for wave/vessel motion dynamics ($\approx 1.40$ tension, $2.44$ lifting)</td></tr>
+        <tr><td>5</td><td>Hydrotest Pressure</td><td>$P_{hydro}$ [MPa]</td><td>Pipeline Design Report</td><td>Determines closure plate thickness &amp; threadolet rating</td></tr>
+        <tr><td>6</td><td>Estimated Head Weight</td><td>$W_{head}$ [t]</td><td>Preliminary BOM</td><td>Used for sizing lifting padeye and deck handling equipment</td></tr>
+        <tr><td>7</td><td>Required Head Types</td><td>A / B / C</td><td>Installation Sequence</td><td>A: Start-up/Laydown, B: Storm A&amp;R, C: Wet-Buckle Emergency Recovery</td></tr>
+        <tr><td>8</td><td>Out-of-Plane Sling Angles</td><td>$\theta_{in}, \theta_{out}$</td><td>DNV-ST-N001 §7.9.9</td><td>Mandatory 5° in-plane + 5° out-of-plane design angle components</td></tr>
+        <tr><td>9</td><td>Available Shackle Catalog</td><td>Model / WLL</td><td>Rigging Contractor</td><td>Fixes pin diameter ($D_{pin}$) and jaw width for padeye sizing</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- PHASE 1 -->
+  <div class="step">
+    <div class="ph">
+      <span>PHASE 1 — Material Selection &amp; Property Matrix</span>
+      <span class="badge blue">Material Decision Table</span>
+    </div>
+    <div class="sec-sub" style="margin-bottom:8px">Select materials matching line pipe grade, structural standards, and offshore subsea corrosion criteria:</div>
+    <div class="grid g2">
+      <div>
+        <h2 style="font-size:13px;color:var(--primary)">Component Selection Rules:</h2>
+        <ul>
+          <li><b>Line Pipe Header:</b> API 5L X52 / X60 / X65 / X70 (must match or exceed pipeline grade).</li>
+          <li><b>Structural Plates &amp; Padeyes:</b> EN 10025 S355J0 or S355J2 (use J2 for subzero design temperatures).</li>
+          <li><b>Forged Flanges:</b> ASTM A694 F52 / F60 / F65 (matching line pipe yield strength).</li>
+          <li><b>Fasteners:</b> ASTM A193 Grade B7 stud bolts + ASTM A194 2H nuts (PTFE coated for subsea corrosion protection).</li>
+          <li><b>Gaskets:</b> KaMOS RTJ Octagonal Stainless Steel SS316 Ring Joint Gasket.</li>
+        </ul>
+      </div>
+      <div>
+        <h2 style="font-size:13px;color:var(--primary)">Critical Material Property Rules:</h2>
+        <div class="formula-box">
+          <div class="f-title">S355 Plate Yield Strength vs Thickness ($t$) — EN 10025:</div>
+          $$\sigma_y = 355\text{ MPa } (t \le 16\text{ mm}) \quad \mid \quad \sigma_y = 345\text{ MPa } (16 < t \le 40\text{ mm}) \quad \mid \quad \sigma_y = 335\text{ MPa } (40 < t \le 63\text{ mm})$$
+        </div>
+        <div class="learn"><b>Elastic Constants:</b> Young's Modulus $E = 210,000\text{ MPa}$, Poisson's ratio $\nu = 0.3$, Density $\rho = 7,850\text{ kg/m}^3$.</div>
+      </div>
     </div>
   </div>
 
-  <h2 style="margin-top:14px">Common Pitfalls</h2>
-  <table><tr><th>#</th><th>Pitfall</th><th>Fix</th></tr>
-  <tr><td>1</td><td>Forgetting the 5° out-of-plane angle</td><td>Real load component — include it</td></tr>
-  <tr><td>2</td><td>Wrong DAF (lifting vs pull)</td><td>Lift 2.44 ≠ pull ≈ 1.4</td></tr>
-  <tr><td>3</td><td>γmw (weld) = γm (material)</td><td>1.30 vs 1.15</td></tr>
-  <tr><td>4</td><td>Pin gap too small</td><td>≥ max(2 mm, 3% D_pin)</td></tr>
-  <tr><td>5</td><td>Units kN vs N, mm vs m</td><td>Keep consistent SI</td></tr>
-  <tr><td>6</td><td>S355 SMYS varies with thickness</td><td>355 / 345 / 335 (t ≤ 16 / 40 / 63)</td></tr>
-  <tr><td>7</td><td>Only checking section 3-3</td><td>Check ALL sections 0-0…3-3</td></tr>
-  <tr><td>8</td><td>Missing Hertz check (Head C)</td><td>Pin-pipe contact — critical</td></tr></table>
+  <!-- PHASE 2 -->
+  <div class="step">
+    <div class="ph">
+      <span>PHASE 2 — Design Load Calculation Workflow (DNV LRFD)</span>
+      <span class="badge blue">Load Factoring</span>
+    </div>
+    <div class="sec-sub" style="margin-bottom:8px">Calculate the factored LRFD design pull force ($F_d$) and decompose into 3D load components:</div>
+    <div class="formula-box">
+      <div class="f-title">Step 1 — Static/Dynamic Pull &amp; LRFD Factoring (DNV-ST-N001 §P.2.6):</div>
+      $$F_{SD} = \max(F_{nom} \cdot DAF,\ F_{DL}) \qquad \longrightarrow \qquad F_d = F_{SD} \cdot \gamma_c \cdot \gamma_f = F_{SD} \cdot 1.30 \cdot 1.30 = 1.69 \cdot F_{SD}$$
+    </div>
+    <div class="grid g2" style="margin-top:8px">
+      <div>
+        <ul>
+          <li><b>Consequence Factor ($\gamma_c$):</b> $1.30$ (DNV-ST-N001 Table 16-1 for major installation equipment).</li>
+          <li><b>Load Factor ($\gamma_f$):</b> $1.30$ (DNV-ST-N001 LRFD limit-state combination).</li>
+          <li><b>DAF (Dynamic Factor):</b> $\approx 1.40$ for winching/pipelay; $2.44$ for deck lifting padeye.</li>
+        </ul>
+      </div>
+      <div>
+        <ul>
+          <li><b>5° + 5° Load Vector Decomposition:</b> Apply $5^\circ$ in-plane + $5^\circ$ out-of-plane angles to padeye pin:
+            $$F_{axial} = F_d \cdot \cos(5^\circ) \cdot \cos(5^\circ) \approx 0.992 \cdot F_d$$
+            $$F_{in-plane} = F_d \cdot \sin(5^\circ) \cdot \cos(5^\circ) \approx 0.087 \cdot F_d$$
+            $$F_{out-of-plane} = F_d \cdot \sin(5^\circ) \approx 0.087 \cdot F_d$$
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 3 -->
+  <div class="step">
+    <div class="ph">
+      <span>PHASE 3 — Geometry &amp; Component Sizing Rules of Thumb</span>
+      <span class="badge blue">Initial Sizing</span>
+    </div>
+    <div class="sec-sub" style="margin-bottom:8px">Establish initial physical dimensions before running formal structural verifications:</div>
+    <div class="grid g2">
+      <div>
+        <h2 style="font-size:13px;color:var(--primary)">1. Main Padeye &amp; Pin Sizing:</h2>
+        <ul>
+          <li><b>Shackle Selection:</b> Choose Shackle WLL $\ge F_{SD}$ from Wide Body catalog (e.g. 55t Wide Body P-6013 with $D_{pin} = 57\text{ mm}$).</li>
+          <li><b>Hole Diameter ($D_{hole}$):</b> $D_{hole} = D_{pin} + \text{GAP}$, where $\text{GAP} \ge \max(2\text{ mm},\ 3\% D_{pin})$. <i>(Crucial to prevent pin binding!)</i></li>
+          <li><b>Main Plate Thickness ($t_{main}$):</b> First estimate $t_{main} \approx \dfrac{F_d}{\sigma_{allow} \cdot D_{pin}}$.</li>
+          <li><b>Outer Radius ($R_{pad}$):</b> $R_{pad} \approx 1.5 \cdot D_{hole}$.</li>
+          <li><b>Cheek Plates ($t_{cheek}$):</b> $t_{cheek} \approx 0.5 \cdot t_{main}$ (welded both sides).</li>
+        </ul>
+      </div>
+      <div>
+        <h2 style="font-size:13px;color:var(--primary)">2. Closure Plate &amp; Shroud Sizing:</h2>
+        <ul>
+          <li><b>Closure Plate ($t_{closure}$):</b> Semicircular solid plate thickness sized by Roark Table 11.2 formula under hydrotest pressure $P_{hydro} \cdot \gamma_Q$ ($\gamma_Q = 1.50$).</li>
+          <li><b>Shroud Protection:</b> Rolled shell thickness $t_{shroud} \approx 10\text{--}12\text{ mm}$, clamp bolts M24 Grade 8.8 pretensioned to $70\% f_{ub} A_s$.</li>
+          <li><b>Threadolets &amp; Nipples:</b> 2" 3000# or 6000# NPT threadolets welded to pipe for vent/drain.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 4 -->
+  <div class="step">
+    <div class="ph">
+      <span>PHASE 4 — Execution &amp; Acceptance Criteria for the 10 Checks</span>
+      <span class="badge blue">Structural Verification</span>
+    </div>
+    <div class="sec-sub" style="margin-bottom:8px">Run all 10 structural &amp; pressure checks. Every single check must satisfy $\text{Unity Check (UC)} \le 1.0$:</div>
+    <div class="formula-box">
+      <div class="f-title">Acceptance Criterion Rule:</div>
+      $$\text{Unity Check (UC)} = \frac{\text{Calculated Stress } (\sigma_{calc})}{\text{Allowable Stress Limit } (\sigma_{allow})} \le 1.00 \qquad \text{where } \sigma_{allow} = \frac{\sigma_y}{\gamma_m} \text{ or } \frac{f_u}{\gamma_{mw}}$$
+    </div>
+    <table>
+      <thead>
+        <tr><th>#</th><th>Design Check</th><th>Standard Reference</th><th>Allowable Limit</th><th>Key Verification Objective</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td><b>Padeye Bearing Stress</b></td><td>DNV-ST-N001 §P2.7</td><td>$\sigma_y / \gamma_m \ (\gamma_m=1.15)$</td><td>Prevents local yielding at pin-hole contact interface</td></tr>
+        <tr><td>2</td><td><b>Tear-Out (Shear-Out)</b></td><td>DNV-ST-N001</td><td>$\sigma_y / \gamma_m$</td><td>Prevents pin shearing through plate material behind hole</td></tr>
+        <tr><td>3</td><td><b>Cheek Plate Welds</b></td><td>DNV-ST-N001</td><td>$\sigma_y / \gamma_{mw} \ (\gamma_{mw}=1.30)$</td><td>Verifies fillet welds bonding cheek plates to main padeye</td></tr>
+        <tr><td>4</td><td><b>Main Plate → Pipe Weld</b></td><td>DNV-ST-N001 (Directional)</td><td>$f_u / \gamma_{mw}$</td><td>von Mises stress check under combined tension + 3D moments</td></tr>
+        <tr><td>5</td><td><b>Sectional Verifications (0-0…3-3)</b></td><td>EN 1993-1-1 Eurocode 3 §6.2</td><td>$\sigma_y / \gamma_m$</td><td>Combined axial + bending + shear at all critical cross-sections</td></tr>
+        <tr><td>6</td><td><b>Closure Plate Bending</b></td><td>Roark's Formulas Table 11.2</td><td>$\sigma_y / \gamma_m$</td><td>Bending stresses at edges A, B, C under $P_{hydro} \cdot \gamma_Q$</td></tr>
+        <tr><td>7</td><td><b>Pig Stopper Capacity</b></td><td>Project Design Rule</td><td>$\sigma_y / \gamma_m$</td><td>Shear &amp; bearing of internal bars under pigging pressure</td></tr>
+        <tr><td>8</td><td><b>Threadolet Weld</b></td><td>EN 1993 Eurocode 3</td><td>$f_u / (0.9 \gamma_{mw} \sqrt{3})$</td><td>Weld shear strength under internal hydrotest pressure</td></tr>
+        <tr><td>9</td><td><b>Lifting Padeye</b></td><td>DNV-ST-N001 (DAF = 2.44)</td><td>$\sigma_y / \gamma_m$ &amp; $f_u / \gamma_{mw}$</td><td>Bearing, shear-out &amp; weld checks for deck handling weight</td></tr>
+        <tr><td>10</td><td><b>Shroud Bending &amp; Clamp Bolts</b></td><td>DNV-ST-N001 + EC3</td><td>$\sigma_y / \gamma_m$ &amp; Bolt Slip $R_d$</td><td>Resists roller load $R_v$, prevents clamp slip on pipe</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- PHASE 5 -->
+  <div class="step">
+    <div class="ph">
+      <span>PHASE 5 — Deliverables &amp; Formal Report Package</span>
+      <span class="badge ok">Final Deliverable Package</span>
+    </div>
+    <div class="sec-sub" style="margin-bottom:8px">Assemble the final engineering documentation for Marine Warranty Surveyor (MWS) and client approval:</div>
+    <div class="grid g2">
+      <div>
+        <h2 style="font-size:13px;color:var(--primary)">1. Fabrication Drawings (Drafter Package):</h2>
+        <ul>
+          <li><b>Assembly Drawing:</b> Complete general arrangement (GA) of head welded to line pipe.</li>
+          <li><b>Main Padeye Detail:</b> Full dimensioning of hole $D_{hole}$, pin $D_{pin}$, radius $R_{pad}$, and bevels.</li>
+          <li><b>Cheek &amp; Closure Plate Details:</b> Plate thickness, hole beveling, and full-penetration weld symbols.</li>
+          <li><b>Shroud &amp; Clamp Details:</b> Half-shell dimensions, rubber lining, bolt torque specs.</li>
+          <li><b>Bill of Materials (BOM):</b> Complete itemized table with material grades, quantities, weights, and standards.</li>
+        </ul>
+      </div>
+      <div>
+        <h2 style="font-size:13px;color:var(--primary)">2. Calculation Report Outline (9 Standard Sections):</h2>
+        <ol style="margin-left:18px;font-size:12px;line-height:1.6;color:#cbd5e1">
+          <li><b>INTRODUCTION:</b> Project background &amp; scope.</li>
+          <li><b>DEFINITIONS &amp; SYMBOLS:</b> Notation list.</li>
+          <li><b>REFERENCES:</b> DNV-ST-N001, EC3, Roark, API 5L.</li>
+          <li><b>DESIGN SCOPE:</b> Head A, B, C operational limits.</li>
+          <li><b>EXECUTIVE SUMMARY:</b> Unity Check (UC) summary table.</li>
+          <li><b>DESIGN DATA:</b> Materials, pipe geometry, LRFD loads.</li>
+          <li><b>DESIGN METHODOLOGY:</b> Equations &amp; formulas.</li>
+          <li><b>RESULTS &amp; VERIFICATIONS:</b> Detailed check calculations.</li>
+          <li><b>APPENDICES:</b> Shackle cut-sheets &amp; material certs.</li>
+        </ol>
+      </div>
+    </div>
+
+    <h2 style="font-size:13px;color:var(--primary);margin-top:12px">3. Pre-Submission QA/QC Checklist:</h2>
+    <div class="learn">
+      <input type="checkbox" checked disabled> All input parameters verified against Pipelay Analysis Report.<br>
+      <input type="checkbox" checked disabled> Material SMYS properly reduced for plate thickness $t > 16\text{ mm}$.<br>
+      <input type="checkbox" checked disabled> 5° in-plane + 5° out-of-plane sling angles applied to $F_d$.<br>
+      <input type="checkbox" checked disabled> Pin clearance $\text{GAP} \ge \max(2\text{ mm}, 3\% D_{pin})$ confirmed.<br>
+      <input type="checkbox" checked disabled> All 10 structural &amp; pressure checks verified with $\text{UC} \le 1.00$.<br>
+      <input type="checkbox" checked disabled> Assembly drawing BOM matches calculation report materials.<br>
+      <input type="checkbox" checked disabled> Summary UC table placed at beginning of report (Section 5) for quick surveyor sign-off.
+    </div>
+  </div>
+
+  <h2 style="margin-top:14px">Engineering Pitfalls &amp; Technical Solutions Matrix</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Common Engineering Pitfall</th><th>Root Cause / Risk</th><th>Mandatory Technical Fix</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td><b>Omitting 5° Out-of-Plane Angle</b></td><td>Ignoring transverse bending moment causes premature weld/section yielding</td><td>Decompose $F_d$ into $F_{axial}$, $F_{in-plane}$ &amp; $F_{out-of-plane}$ components</td></tr>
+      <tr><td>2</td><td><b>Using Wrong DAF</b></td><td>Using tension DAF ($\approx 1.4$) for deck lifting causes padeye failure</td><td>Apply $\text{DAF} = 2.44$ for deck lifting padeye per DNV-ST-N001 Table 16-1</td></tr>
+      <tr><td>3</td><td><b>Confusing Weld &amp; Material Safety Factors</b></td><td>Overestimating weld allowable by using $\gamma_m=1.15$ instead of $\gamma_{mw}=1.30$</td><td>Strictly apply $\gamma_{mw} = 1.30$ for all structural weld checks</td></tr>
+      <tr><td>4</td><td><b>Pin Gap Clearance Too Tight</b></td><td>GAP $< 2\text{ mm}$ causes shackle pin corner pinching &amp; high stress concentrations</td><td>Ensure $\text{GAP} = D_{hole} - D_{pin} \ge \max(2\text{ mm},\ 3\% D_{pin})$</td></tr>
+      <tr><td>5</td><td><b>Inconsistent Unit Systems</b></td><td>Mixing $\text{kN}$ with $\text{N}$, or $\text{mm}$ with $\text{m}$ (1000× calculation error)</td><td>Convert all forces to Newtons [$\text{N}$] and dimensions to millimeters [$\text{mm}$] ($\text{MPa} = \text{N/mm}^2$)</td></tr>
+      <tr><td>6</td><td><b>Ignoring S355 Yield Drop with Thickness</b></td><td>Assuming $\sigma_y = 355\text{ MPa}$ for $t = 40\text{ mm}$ plate ($\sigma_y$ drops to $345\text{--}335\text{ MPa}$)</td><td>Apply EN 10025 thickness table: $355\text{ MPa } (\le 16), 345\text{ MPa } (16\text{--}40), 335\text{ MPa } (40\text{--}63)$</td></tr>
+      <tr><td>7</td><td><b>Only Verifying Section 3-3</b></td><td>Assuming padeye base (Section 3-3) is always worst, ignoring Section 0-0/1-1/2-2</td><td>Calculate and report combined stresses at ALL cross-sections 0-0 through 3-3</td></tr>
+      <tr><td>8</td><td><b>Missing Hertz Contact Check (Head C)</b></td><td>High Hertz contact stress between recovery pin and pipe inner wall causes local denting</td><td>Run Hertzian contact stress check for Head C ($\sigma_{Hertz} \le 0.90 \sigma_y$)</td></tr>
+    </tbody>
+  </table>
 </div>
 
 <!-- ============ MATERIALS ============ -->
